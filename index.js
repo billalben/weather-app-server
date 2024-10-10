@@ -13,11 +13,20 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-const isProduction = process.env.NODE_ENV === "production";
+const whiteList = [
+  "https://weather-io-app.netlify.app",
+  "https://billalben.github.io",
+];
 
 const corsOptions = {
-  origin: isProduction ? "https://weather-io-app.netlify.app" : "*",
-  credentials: true,
+  origin: (origin, callback) => {
+    if (!origin || whiteList.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not Allowed By CORS"));
+    }
+  },
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
