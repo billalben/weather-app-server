@@ -1,7 +1,7 @@
 const cron = require("node-cron");
 const https = require("https");
 
-const URL = "https://billalben.github.io/weather-app";
+const URL = "https://weather-app-server-qgr9.onrender.com";
 
 const job = new cron.schedule("*/10 * * * *", function () {
   https
