@@ -4,29 +4,20 @@ const cors = require("cors");
 const rateLimiter = require("./middlewares/rateLimiter");
 const weatherRoutes = require("./routes/weather");
 
+const job = require("./utils/cron");
+
+job.start();
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-const whiteList = [
-  "http://127.0.0.1",
-  "http://127.0.0.1:5500",
-  "http://localhost",
-  "http://localhost:5500",
-  "https://billalben.github.io",
-  "https://weather-io-app.netlify.app",
-];
+const isProduction = process.env.NODE_ENV === "production";
 
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || whiteList.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not Allowed By CORS"));
-    }
-  },
-  optionsSuccessStatus: 200,
+  origin: isProduction ? "https://weather-io-app.netlify.app" : "*",
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
