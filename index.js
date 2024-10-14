@@ -4,10 +4,6 @@ const cors = require("cors");
 const rateLimiter = require("./middlewares/rateLimiter");
 const weatherRoutes = require("./routes/weather");
 
-const job = require("./utils/cron");
-
-job.start();
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
